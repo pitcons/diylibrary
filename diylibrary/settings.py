@@ -12,20 +12,33 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import ConfigParser
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+CONFIG = ConfigParser.RawConfigParser()
+CONFIG.read(os.path.join(BASE_DIR, 'settings.ini'))
+
+def ini_get(section, key, default):
+    try:
+        return CONFIG.get(section, key)
+    except ConfigParser.NoSectionError:
+        return default
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '*o-s#i9xec6*wyl1fvw*agwbu-m&$i!6&1e%qshvlm&irho6r#'
+SECRET_KEY = ini_get('common', 'SECRET_KEY', 'ox-s#i9xec6*wyl1fvw*agwbu-m&$i!6&1e%qshvlm&irho6r#')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = ini_get("common", "DEBUG", 'true').lower() == 'true'
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = [
+    'diylibrary.free-node.ru',
+]
 
 
 # Application definition
@@ -82,9 +95,10 @@ WSGI_APPLICATION = 'diylibrary.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'diylibrary',
-        'USER': 'diylibrary',
-        'PASSWORD': 'hackme'
+        'HOST': '127.0.0.1',
+        'NAME': ini_get('database', 'NAME', 'diylibrary'),
+        'USER': ini_get('database', 'USER', 'diylibrary'),
+        'PASSWORD': ini_get('database', 'PASSWORD', 'hackme'),
     }
 }
 
