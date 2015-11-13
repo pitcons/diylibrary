@@ -1,0 +1,29 @@
+{% extends 'bootstrap3/bootstrap3.html' %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block bootstrap3_extra_head %}
+<script src="{% static 'diylibrary.js' %}"></script>
+
+{% endblock %}
+
+{% block bootstrap3_title %}{% trans "Каталог Цеткин" %}{% endblock %}
+
+{% block bootstrap3_content %}
+
+    <div class="container-fluid">
+        <h1><a href="{% url 'books' %}">{% block title %}{% trans 'Каталог Цеткин' %}{% endblock %}</a></h1>
+
+
+        {% bootstrap_messages %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+{% endblock %}
+
+

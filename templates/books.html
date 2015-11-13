@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load urls %}
+{% load tagging_tags %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col-xs-4 col-sm-2">
+        <h2>Разделы</h2>
+        <div class="list-group">
+            {% for section in sections %}
+            <a href="{% url 'books' %}?section={{ section.name }}" class="list-group-item {% if section.name == selected_section%}active{% endif %}">{{ section.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-xs-8 col-sm-10">
+        <div class="row">
+            <div class="col-xs-8"></div>
+            <div class="col-xs-4">
+                <form action="{% url 'books' %}" class="pull-right" role="search">
+                    <div class="input-group">
+                        <input name="q" type="text" class="form-control" value="{{ q }}">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default" type="button">{% trans 'поиск' %}</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-striped table-hover ">
+            <thead>
+                <tr>
+                    <th>{% trans 'ISBN' %}</th>
+                    <th>{% trans 'Авторы' %}</th>
+                    <th>{% trans 'Название' %}</th>
+                    <th>{% trans 'Доступно' %}</th>
+                    <th></th>
+                    <th>{% trans 'Теги' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in object_list %}
+                {% tags_for_object book as tag_list %}
+                <tr id="book-{{ book.id }}">
+                    <td>{{ book.isbn }}</td>
+                    <td>{% for author in book.authors.all %} {{ author }} {% endfor %}</td>
+                    <td>{{ book.title }}</td>
+                    <th><span class="is-quantity">{{ book.quantity }}</span> / <span class="is-quantity-total">{{ book.quantity_total }}</spa></th>
+                    <td>
+                        <form>
+                            <a onclick="return book_reserve({{ book.id }})" href="#" class="btn btn-default">{% trans 'Взять' %}</a>
+                            <a onclick="return book_return({{ book.id }})" href="#" class="btn btn-default">{% trans 'Вернуть' %}</a>
+                        </form>
+                    </td>
+                    <td>
+                        {% for tag in tag_list %}
+                        <a href="{% url 'books' %}?tag={{ tag }}">{{ tag }}</a>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                <a href="{% add_params current_url page=page_obj.previous_page_number %}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                <a href="{% add_params current_url page=page_obj.next_page_number %}">next</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+
+
+    </div>
+</div>
+{% endblock %}
