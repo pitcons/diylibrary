@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'diylibrary.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '127.0.0.1',
+        'HOST': ini_get('database', 'HOST', '127.0.0.1'),
         'NAME': ini_get('database', 'NAME', 'diylibrary'),
         'USER': ini_get('database', 'USER', 'diylibrary'),
         'PASSWORD': ini_get('database', 'PASSWORD', 'hackme'),

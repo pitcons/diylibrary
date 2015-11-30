@@ -1,0 +1,9 @@
+[common]
+DEBUG: True
+SECRET_KEY: hackme
+
+[database]
+NAME: diylibrary
+USER: diylibrary
+PASSWORD: hackme2
+HOST: 127.0.0.1
