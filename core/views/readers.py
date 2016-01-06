@@ -16,7 +16,7 @@ class ReadersView(ListView):
         readers = models.Reader.objects.select_related().all()
 
         if 'q' in self.request.GET and self.request.GET['q']:
-            q = self.request.GET['q']
+            q = self.request.GET['q'].strip()
             readers = readers.filter(name__icontains=q)
 
         return readers.order_by('name')

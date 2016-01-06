@@ -24,6 +24,7 @@ import core.views.rest as rest
 
 urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
+    url(r'^tagging_autocomplete/', include('tagging_autocomplete.urls')),
     url(r'^admin/', include(admin.site.urls)),
 #    url(r'^books/', BooksView.as_view(), name="books"),
 #    url(r'^api/book/new', RestView.as_view(), name="api_book_new"),

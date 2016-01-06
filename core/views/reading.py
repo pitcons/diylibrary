@@ -20,7 +20,7 @@ class ReadingView(ListView):
             reading = reading.exclude(returned_at__isnull=False)
 
         if 'q' in self.request.GET and self.request.GET['q']:
-            q = self.request.GET['q']
+            q = self.request.GET['q'].strip()
             authors = models.Author.objects.filter(name__icontains=q)
             books = models.Book.objects.filter(Q(title__icontains=q) |
                                                Q(isbn__icontains=q) |
@@ -29,7 +29,7 @@ class ReadingView(ListView):
             reading = reading.filter(Q(book__in=books)|
                                      Q(reader__in=readers))
 
-        return reading.order_by('took_at')
+        return reading.order_by('-took_at')
 
     def get_context_data(self, **kwargs):
         context = super(ReadingView, self).get_context_data(**kwargs)

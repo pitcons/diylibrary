@@ -46,7 +46,7 @@
             <thead>
                 <tr>
                     <th>{% trans 'ISBN' %}</th>
-                    <th>{% trans 'Авторы' %}</th>
+                    <th>{% trans 'Авторы(ки)' %}</th>
                     <th>{% trans 'Название' %}</th>
                     <th>{% trans 'Доступно' %}</th>
                     <th></th>
@@ -57,9 +57,21 @@
                 {% for book in object_list %}
                 {% tags_for_object book as tag_list %}
                 <tr id="book-{{ book.id }}">
-                    <td>{{ book.isbn }}</td>
-                    <td>{% for author in book.authors.all %} {{ author }} {% endfor %}</td>
-                    <td>{{ book.title }}</td>
+                    <td>
+                        {{ book.isbn|default_if_none:_("(нет)") }}
+                    </td>
+                    <td>
+                      {% include 'inc/authors.html' with authors=book.authors.all %}
+                    </td>
+                    <td>
+                      {% if user.is_authenticated %}
+                      <a href="{% url 'admin:core_book_change' book.id %}">
+                          {{ book.title }}
+                      </a>
+                      {% else %}
+                          {{ book.title }}
+                      {% endif %}
+                    </td>
                     <th><span class="is-quantity" ng-model="bookq[{{ book.id }}]" ng-init="bookq[{{ book.id }}] = {{ book.quantity }}">{[ bookq[{{ book.id }}] ]}</span> / <span class="is-quantity-total">{{ book.quantity_total }}</spa></th>
                     <td class="text-nowrap">
                       {% if user.is_authenticated %}

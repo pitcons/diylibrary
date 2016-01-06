@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load admin_urls %}
 {% load i18n %}
 {% load urls %}
 {% load tagging_tags %}
@@ -10,7 +11,7 @@
         <table class="table table-striped table-hover ">
             <thead>
                 <tr>
-                  <th>{% trans 'Читатель' %}</th>
+                  <th>{% trans 'Читатель(ница)' %}</th>
                   <th>{% trans 'Взятые книги' %}</th>
                   <th>{% trans 'Возвращенные книги' %}</th>
                 </tr>
@@ -18,23 +19,31 @@
             <tbody>
                 {% for reader in object_list %}
                 <tr>
-                  <td>{{ reader.name }}</td>
+                  <td>
+                    <a href="{% url 'admin:core_reader_change' reader.id %}">{{ reader.name }}</a>
+                  </td>
                   <td>
                     <ul>
-                    {% for book in reader.books.all %}
-                    {% if not book.returned_at %}
-                    <li>{% for author in book.authors.all %}{{ author.name }}{% endfor %} <i>"{{ book.title }}"</i> </li>
-                    {% endif %}
-                    {% endfor %}
+                      {% for reading in reader.reading_set.all %}
+                      {% if not reading.returned_at %}
+                      <li>
+                        {% include 'inc/authors.html' with authors=reading.book.authors.all%}
+                        <b>"<a href="{% url 'admin:core_book_change' reading.book.id %}">{{ reading.book.title }}</a>"</b>
+                      </li>
+                      {% endif %}
+                      {% endfor %}
                     </ul>
                   </td>
                   <td>
                     <ul>
-                    {% for book in reader.books.all %}
-                    {% if book.returned_at %}
-                    <li>{% for author in book.authors.all %}{{ author.name }}{% endfor %} <i>"{{ book.title }}"</i> </li>
-                    {% endif %}
-                    {% endfor %}
+                      {% for reading in reader.reading_set.all %}
+                      {% if reading.returned_at %}
+                      <li>
+                        {% include 'inc/authors.html' with authors=reading.book.authors.all%}
+                        <b>"<a href="{% url 'admin:core_book_change' reading.book.id %}">{{ reading.book.title }}</a>"</b>
+                      </li>
+                      {% endif %}
+                      {% endfor %}
                     </ul>
                   </td>
                 </tr>

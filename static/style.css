@@ -39,3 +39,7 @@ form span.username {
   width:1%;
   display: table-cell;
 }
+
+a {
+    text-decoration: none !important;
+}

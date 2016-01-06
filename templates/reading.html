@@ -23,7 +23,8 @@
                     <tr>
                         <th>{% trans 'Время взятия' %}</th>
                         <th>{% trans 'Время возвращения' %}</th>
-                        <th>{% trans 'Читатель' %}</th>
+                        <th>{% trans 'Читатель(ница)' %}</th>
+                        <th>{% trans 'Авторы(ки)' %}</th>
                         <th>{% trans 'Книга' %}</th>
                         <th></th>
                     </tr>
@@ -31,10 +32,19 @@
                 <tbody>
                     {% for reading in object_list %}
                     <tr>
-                        <td>{{ reading.took_at }}</td>
-                        <td id="reading-date-{{ reading.id }}">{{ reading.returned_at|default:'' }}</td>
-                        <td>{{ reading.reader }}</td>
-                        <td>{{ reading.book }}</td>
+                        <td class="text-nowrap">{{ reading.took_at }}</td>
+                        <td class="text-nowrap" id="reading-date-{{ reading.id }}">
+                          {{ reading.returned_at|default:'' }}
+                        </td>
+                        <td>
+                          <a href="{% url 'admin:core_reader_change' reading.reader.id %}">{{ reading.reader }}</a>
+                        </td>
+                        <td>
+                          {% include 'inc/authors.html' with authors=reading.book.authors.all%}
+                        </td>
+                        <td>
+                          <a href="{% url 'admin:core_book_change' reading.book.id %}">{{ reading.book }}</a>
+                        </td>
                         <td>
 
                           <a id="reading-return-btn-{{ reading.id }}"

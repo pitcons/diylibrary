@@ -55,6 +55,7 @@ INSTALLED_APPS = (
     'bootstrap3',
     'url_tools',
     'core',
+    'tagging_autocomplete',
 )
 
 MIDDLEWARE_CLASSES = (

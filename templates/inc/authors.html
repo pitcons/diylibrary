@@ -1,0 +1,8 @@
+{% for author in authors %}
+    {% if user.is_authenticated %}
+    <a href="{% url 'admin:core_author_change' author.id %}">{{ author.name }}</a>
+    {% else %}
+    {{ author.name }}
+    {% endif %}
+{% if not forloop.last %}, {% endif %}
+{% endfor %}
