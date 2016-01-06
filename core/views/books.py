@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from tagging.models import Tag, TaggedItem
 from django.views.generic import TemplateView, ListView
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
 from django.db.models import Q
 
 from core import models
@@ -34,7 +36,12 @@ class BooksView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(BooksView, self).get_context_data(**kwargs)
+        context['search'] = {
+            'url': reverse('books'),
+            'place_holder': _(u'поиск книги')
+        }
         context['sections'] = models.Section.objects.order_by('name')
+        context['readers'] = models.Reader.objects.all()
 
         if 'section' in self.request.GET:
             context['selected_section'] = self.request.GET['section']

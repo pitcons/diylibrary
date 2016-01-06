@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load urls %}
+{% load tagging_tags %}
+
+{% block content %}
+<div ng-controller="ReadingCtrl">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="form-group">
+          <label for="usr">
+            <input id="show_returned" type="checkbox" {% if search.show_returned == 'true' %}checked{% endif %} />
+            {% trans 'Показывать уже возвращеные книги' %}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <tr>
+                        <th>{% trans 'Время взятия' %}</th>
+                        <th>{% trans 'Время возвращения' %}</th>
+                        <th>{% trans 'Читатель' %}</th>
+                        <th>{% trans 'Книга' %}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reading in object_list %}
+                    <tr>
+                        <td>{{ reading.took_at }}</td>
+                        <td id="reading-date-{{ reading.id }}">{{ reading.returned_at|default:'' }}</td>
+                        <td>{{ reading.reader }}</td>
+                        <td>{{ reading.book }}</td>
+                        <td>
+
+                          <a id="reading-return-btn-{{ reading.id }}"
+                             confirm-msg="{% trans 'Вернуть книгу?' %}"
+                             onclick="return reading_return({{ reading.id }})"
+                             href="#"
+                             class="btn btn-default" {% if reading.returned_at %}style="display: none"{% endif %}>
+                            {% trans 'Вернуть' %}
+                          </a>
+
+                          <a id="reading-undo-btn-{{ reading.id }}"
+                             confirm-msg="{% trans 'Оменить возврат книги?' %}"
+                             onclick="return reading_undo({{ reading.id }})"
+                             href="#"
+                             class="btn btn-default" {% if not reading.returned_at %}style="display: none"{% endif %}>
+                            {% trans 'Отменить возврат' %}
+                          </a>
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% if is_paginated %}
+            {% include 'inc/pagination.html' %}
+            {% endif %}
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}

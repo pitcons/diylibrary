@@ -7,23 +7,37 @@
 {% bootstrap_javascript %}
 
 {% block bootstrap3_extra_head %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-touch.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-animate.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-resource.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.min.js"></script>
+
 <script src="{% static 'diylibrary.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+
+
+
+<script src="https://cdn.rawgit.com/angular-ui/bower-ui-grid/master/ui-grid.min.js"></script>
+<link rel="stylesheet" href="https://cdn.rawgit.com/angular-ui/bower-ui-grid/master/ui-grid.min.css" />
+
 
 {% endblock %}
 
 {% block bootstrap3_title %}{% trans "Каталог Цеткин" %}{% endblock %}
 
 {% block bootstrap3_content %}
+<div class="container-fluid" ng-app="diylibraryApp">
 
-    <div class="container-fluid">
-        <h1><a href="{% url 'books' %}">{% block title %}{% trans 'Каталог Цеткин' %}{% endblock %}</a></h1>
+  {% include 'inc/navbar.html' %}
 
 
-        {% bootstrap_messages %}
+  <!-- <h1><a href="{% url 'books' %}">{% block title %}{% trans 'Каталог Цеткин' %}{% endblock %}</a></h1> -->
 
-        {% block content %}{% endblock %}
-    </div>
+  {% bootstrap_messages %}
+  {% block content %}{% endblock %}
 
+
+</div>
 {% endblock %}
-
-

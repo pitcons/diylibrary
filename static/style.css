@@ -1,0 +1,41 @@
+.login {
+    margin: 10px 20px 0px 0px;
+}
+
+form span.username {
+    padding-right: 20px;
+}
+
+#book-reserve-modal > .modal-body {
+
+}
+
+#search_form > .form-group {
+    display: inline;
+    width: 100%;
+}
+
+.fill {
+  position: relative;
+  display: table;
+  border-collapse: separate;
+}
+
+.fill .form-control {
+  width: 100%;
+  margin-bottom: 0;
+  display: inline-block;
+}
+
+
+.fill .btn {
+  white-space:nowrap;
+  width:1%;
+  display: table-cell;
+}
+
+.fill .space {
+  white-space:nowrap;
+  width:1%;
+  display: table-cell;
+}

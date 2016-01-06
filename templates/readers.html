@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load urls %}
+{% load tagging_tags %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xs-12">
+
+        <table class="table table-striped table-hover ">
+            <thead>
+                <tr>
+                  <th>{% trans 'Читатель' %}</th>
+                  <th>{% trans 'Взятые книги' %}</th>
+                  <th>{% trans 'Возвращенные книги' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reader in object_list %}
+                <tr>
+                  <td>{{ reader.name }}</td>
+                  <td>
+                    <ul>
+                    {% for book in reader.books.all %}
+                    {% if not book.returned_at %}
+                    <li>{% for author in book.authors.all %}{{ author.name }}{% endfor %} <i>"{{ book.title }}"</i> </li>
+                    {% endif %}
+                    {% endfor %}
+                    </ul>
+                  </td>
+                  <td>
+                    <ul>
+                    {% for book in reader.books.all %}
+                    {% if book.returned_at %}
+                    <li>{% for author in book.authors.all %}{{ author.name }}{% endfor %} <i>"{{ book.title }}"</i> </li>
+                    {% endif %}
+                    {% endfor %}
+                    </ul>
+                  </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if is_paginated %}
+        {% include 'inc/pagination.html' %}
+        {% endif %}
+
+
+    </div>
+</div>
+{% endblock %}

@@ -35,6 +35,7 @@ SECRET_KEY = ini_get('common', 'SECRET_KEY', 'ox-s#i9xec6*wyl1fvw*agwbu-m&$i!6&1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ini_get("common", "DEBUG", 'true').lower() == 'true'
 
+ATOMIC_REQUESTS = True
 
 ALLOWED_HOSTS = [
     'diylibrary.free-node.ru',
@@ -106,7 +107,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'UTC'
 

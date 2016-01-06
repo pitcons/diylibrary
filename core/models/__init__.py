@@ -10,6 +10,7 @@ class Author(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class Section(models.Model):
     name = models.CharField(max_length=255)
 
@@ -26,4 +27,24 @@ class Book(models.Model):
     section = models.ForeignKey(Section)
     authors = models.ManyToManyField(Author)
 
+    def __unicode__(self):
+        return self.title
+
 register(Book)
+
+
+class Reader(models.Model):
+    name = models.CharField(max_length=512)
+    books = models.ManyToManyField(Book, through='Reading')
+
+    def __unicode__(self):
+        return self.name
+
+
+class Reading(models.Model):
+    reader = models.ForeignKey(Reader)
+    book = models.ForeignKey(Book)
+    took_at = models.DateField()
+    returned_at = models.DateField(default=None,
+                                   null=True,
+                                   blank=True)

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block 'login' %}
+{% endblock %}
+
+{% block content %}
+
+<div class="jumbotron col-sm-6 col-xs-8">
+<form class="form-horizontal" method="post" action="{% url 'django.contrib.auth.views.login' %}">
+  <div class="row">
+    <fieldset>
+      <legend>{% trans 'Вход' %}</legend>
+      {% if form.errors %}
+      <div class="form-group">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-10">
+          {% trans 'Нет пользователя с таким логином и паролем' %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="col-lg-2 control-label">{% trans 'Логин' %}</label>
+        <div class="col-lg-10">
+          <input id="id_username" name="username" type="text" class="form-control" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-lg-2 control-label">{% trans 'Пароль' %}</label>
+        <div class="col-lg-10">
+          <input id="id_password" name="password" type="password" class="form-control" />
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <div class="row">
+    <div class="col-sm-8">
+      <!-- <p><a href="{% url 'password_reset' %}">забыли пароль?</a></p> -->
+    </div>
+    <div class="col-sm-4">
+      <button type="submit" class="btn btn-primary btn-sm  pull-right">Вход</button>
+      <input type="hidden" name="next" value="{{ next }}" />
+    </div>
+  </div>
+</form>
+
+</div>
+
+{% endblock %}

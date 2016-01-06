@@ -1,0 +1,15 @@
+{% load i18n %}
+{% load urls %}
+<div class="pagination">
+  <span class="page-links">
+    {% if page_obj.has_previous %}
+    <a href="{% add_params current_url page=page_obj.previous_page_number %}"><<</a>
+    {% endif %}
+    <span class="page-current">
+      {% trans 'Страница' %} {{ page_obj.number }} {% trans 'из' %} {{ page_obj.paginator.num_pages }}
+    </span>
+    {% if page_obj.has_next %}
+    <a href="{% add_params current_url page=page_obj.next_page_number %}">>></a>
+    {% endif %}
+  </span>
+</div>

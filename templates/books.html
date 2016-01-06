@@ -5,6 +5,31 @@
 
 {% block content %}
 
+<div id="book-reserve-modal" class="modal" ng-controller="ReadersCtrl">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h4 class="modal-title">{% trans 'Кто берет книгу' %}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="list-group">
+
+          <div>
+            <div class="list-group-item" ui-grid="readers" ui-grid-selection></div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Отмена' %}</button>
+        <button ng-click="book_reserve()" type="button" class="btn btn-primary">{% trans 'Взять' %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div class="row">
     <div class="col-xs-4 col-sm-2">
@@ -16,19 +41,6 @@
         </div>
     </div>
     <div class="col-xs-8 col-sm-10">
-        <div class="row">
-            <div class="col-xs-8"></div>
-            <div class="col-xs-4">
-                <form action="{% url 'books' %}" class="pull-right" role="search">
-                    <div class="input-group">
-                        <input name="q" type="text" class="form-control" value="{{ q }}">
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default" type="button">{% trans 'поиск' %}</button>
-                        </span>
-                    </div>
-                </form>
-            </div>
-        </div>
 
         <table class="table table-striped table-hover ">
             <thead>
@@ -41,19 +53,21 @@
                     <th>{% trans 'Теги' %}</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody ng-controller="BooksCtrl">
                 {% for book in object_list %}
                 {% tags_for_object book as tag_list %}
                 <tr id="book-{{ book.id }}">
                     <td>{{ book.isbn }}</td>
                     <td>{% for author in book.authors.all %} {{ author }} {% endfor %}</td>
                     <td>{{ book.title }}</td>
-                    <th><span class="is-quantity">{{ book.quantity }}</span> / <span class="is-quantity-total">{{ book.quantity_total }}</spa></th>
-                    <td>
+                    <th><span class="is-quantity" ng-model="bookq[{{ book.id }}]" ng-init="bookq[{{ book.id }}] = {{ book.quantity }}">{[ bookq[{{ book.id }}] ]}</span> / <span class="is-quantity-total">{{ book.quantity_total }}</spa></th>
+                    <td class="text-nowrap">
+                      {% if user.is_authenticated %}
                         <form>
-                            <a onclick="return book_reserve({{ book.id }})" href="#" class="btn btn-default">{% trans 'Взять' %}</a>
-                            <a onclick="return book_return({{ book.id }})" href="#" class="btn btn-default">{% trans 'Вернуть' %}</a>
+                            <a ng-click="book_reserve_show({{ book.id }})" href="#" ng-class="bookq[{{ book.id }}] === 0 ? 'disabled': ''" class="btn btn-default">{% trans 'Взять' %}</a>
+                            {% comment %}<a onclick="return book_return({{ book.id }})" href="#" class="btn btn-default">{% trans 'Вернуть' %}</a>{% endcomment %}
                         </form>
+                      {% endif %}
                     </td>
                     <td>
                         {% for tag in tag_list %}
@@ -66,19 +80,7 @@
         </table>
 
         {% if is_paginated %}
-        <div class="pagination">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                <a href="{% add_params current_url page=page_obj.previous_page_number %}">previous</a>
-                {% endif %}
-                <span class="page-current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-                {% if page_obj.has_next %}
-                <a href="{% add_params current_url page=page_obj.next_page_number %}">next</a>
-                {% endif %}
-            </span>
-        </div>
+        {% include 'inc/pagination.html' %}
         {% endif %}
 
 
