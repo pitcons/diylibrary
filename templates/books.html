@@ -23,6 +23,8 @@
 
       </div>
       <div class="modal-footer">
+        <button ng-click="new_reader()" type="button" class="btn btn-default pull-left">{% trans 'Новый читатель' %}</button>
+
         <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Отмена' %}</button>
         <button ng-click="book_reserve()" type="button" class="btn btn-primary">{% trans 'Взять' %}</button>
       </div>

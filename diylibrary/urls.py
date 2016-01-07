@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^api/reading/return', rest.reading_return),
     url(r'^api/reading/undo', rest.reading_undo),
     url(r'^api/book/?', rest.book_get),
+    url(r'^api/reader/new', rest.reader_new),
     url(r'^api/reader/all', rest.readers_all),
     url(r'^reading/?',
         login_required(ReadingView.as_view()),

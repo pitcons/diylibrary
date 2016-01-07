@@ -49,14 +49,38 @@ app.controller('ReadersCtrl', function($scope, $http, $interval, data) {
         var sel = $scope.readersGridApi.selection.getSelectedRows();
         if (sel.length > 0) {
             var reader_id = sel[0].id;
-            console.log(book_id, reader_id);
-            // update_quantity(book_id, '/api/book/reserve/?id='+ book_id + '&reader_id=' + reader_id);
             $('#book-reserve-modal').modal('hide');
             $http.post('/api/book/reserve/?id='+ book_id + '&reader_id=' + reader_id).then(function() {
                 data['bookq'][book_id] -= 1;
             });
         } else {
             alert('Необходимо выбрать читателя');
+        }
+    }
+
+    $scope.new_reader = function() {
+        var name = window.prompt("Новый читатель", "");
+        if (name) {
+            $http.post('/api/reader/new', {name: name}).then(function(response) {
+                if (response.data.error) {
+                    alert(response.data.error);
+                } else {
+                    $scope.readers.data.unshift(response.data);
+                    var book_id = data.selectedBook;
+                    var reader_id = response.data.id;
+                    $('#book-reserve-modal').modal('hide');
+                    $http.post('/api/book/reserve/?id='+ book_id + '&reader_id=' + reader_id).then(function() {
+                        data['bookq'][book_id] -= 1;
+                    });
+
+                    /*
+                    $scope.readersGridApi.selection.clearSelectedRows();
+                    $scope.readersGridApi.selection.selectRow(
+                        $scope.readers.data[0]
+                    );
+                    */
+                }
+            });
         }
     }
 

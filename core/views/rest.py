@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseBadRequest
@@ -8,6 +9,10 @@ from django.db.models import F
 from django.views.generic import View
 from core.models import Book, Reader, Reading
 
+def _get_post(request):
+    post = json.loads(request.body)
+    post.update(request.POST)
+    return post
 
 def _get_book(request):
     if 'id' in request.GET:
@@ -101,4 +106,24 @@ def readers_all(request):
             {'id': reader.id, 'name': reader.name}
             for reader in Reader.objects.all()
         ]
+    })
+
+
+@login_required
+def reader_new(request):
+    post = _get_post(request)
+    if 'name' not in post:
+        return JsonResponse({
+            'error': 'Параметр name обязателен'
+        })
+    if Reader.objects.filter(name=post['name']).exists():
+        return JsonResponse({
+            'error': 'Читатель с таким именем уже сущетвует'
+        })
+
+    reader = Reader(name=post['name'])
+    reader.save()
+    return JsonResponse({
+        'id': reader.id,
+        'name': reader.name,
     })
