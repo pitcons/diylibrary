@@ -41,6 +41,10 @@ app.controller('ReadersCtrl', function($scope, $http, $interval, data) {
         ],
         onRegisterApi: function(gridApi) {
             $scope.readersGridApi = gridApi;
+
+            $http.get('/api/reader/all').then(function(response) {
+                $scope.readers.data = response.data.readers;
+            });
         }
     };
 
@@ -83,10 +87,6 @@ app.controller('ReadersCtrl', function($scope, $http, $interval, data) {
             });
         }
     }
-
-    $http.get('/api/reader/all').then(function(response) {
-        $scope.readers.data = response.data.readers;
-    });
 
 });
 

@@ -6,7 +6,7 @@ from .models import Author, Section, Book, Reader, Reading, Owner
 
 class BookAdmin(admin.ModelAdmin):
     list_display = 'id', 'isbn', 'year',  'section', 'title', 'quantity', 'quantity_total'
-    list_filter = 'year', 'section', 'owner'
+    list_filter = 'year', 'section', 'owner', 'room_only'
     search_fields = 'title',
     filter_horizontal = 'authors',
 

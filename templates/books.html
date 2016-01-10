@@ -51,6 +51,7 @@
                     <th>{% trans 'Авторы(ки)' %}</th>
                     <th>{% trans 'Название' %}</th>
                     <th>{% trans 'Доступно' %}</th>
+                    <th>{% trans 'Только читальный зал' %}</th>
                     <th></th>
                     <th>{% trans 'Теги' %}</th>
                 </tr>
@@ -74,7 +75,8 @@
                           {{ book.title }}
                       {% endif %}
                     </td>
-                    <th><span class="is-quantity" ng-model="bookq[{{ book.id }}]" ng-init="bookq[{{ book.id }}] = {{ book.quantity }}">{[ bookq[{{ book.id }}] ]}</span> / <span class="is-quantity-total">{{ book.quantity_total }}</spa></th>
+                    <td><span class="is-quantity" ng-model="bookq[{{ book.id }}]" ng-init="bookq[{{ book.id }}] = {{ book.quantity }}">{[ bookq[{{ book.id }}] ]}</span> / <span class="is-quantity-total">{{ book.quantity_total }}</spa></td>
+                    <td>{% if book.room_only %}{% trans 'Да' %}{% else %}{% trans 'Нет' %}{% endif %}</td>
                     <td class="text-nowrap">
                       {% if user.is_authenticated %}
                         <form>
