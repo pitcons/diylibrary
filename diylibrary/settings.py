@@ -54,6 +54,7 @@ INSTALLED_APPS = (
     'tagging',
     'bootstrap3',
     'url_tools',
+    'djangobower',
     'core',
     'tagging_autocomplete',
 )
@@ -135,3 +136,13 @@ BOOTSTRAP3 = {
 #    'css_url': 'https://bootswatch.com/slate/bootstrap.min.css'
 #    'css_url': 'https://bootswatch.com/yeti/bootstrap.min.css',
 }
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "djangobower.finders.BowerFinder",
+]
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'static/')
+BOWER_INSTALLED_APPS = (
+    'angular-ui-grid',
+)

@@ -24,7 +24,8 @@ app.config(['$httpProvider', function($httpProvider) {
 
 app.factory('data', function () {
     return {
-        'bookq': {}
+        'bookq': {},
+        'readersGridApi': null
     };
 });
 
@@ -41,10 +42,12 @@ app.controller('ReadersCtrl', function($scope, $http, $interval, data) {
         ],
         onRegisterApi: function(gridApi) {
             $scope.readersGridApi = gridApi;
+            data['readersGridApi'] = gridApi;
+            console.log($scope.readersGridApi);
+            console.log($scope);
 
             $http.get('/api/reader/all').then(function(response) {
                 $scope.readers.data = response.data.readers;
-                $scope.readersGridApi.core.refresh();
             });
         }
     };
@@ -99,6 +102,8 @@ app.controller('BooksCtrl', function($scope, $http, $interval, data) {
     $scope.bookq = data['bookq'];
     $scope.book_reserve_show = function(book_id) {
         $('#book-reserve-modal').modal('show');
+        data['readersGridApi'].core.refresh();
+        data['readersGridApi'].core.handleWindowResize();
         data.selectedBook = book_id;
         return false;
     }
