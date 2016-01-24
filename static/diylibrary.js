@@ -44,6 +44,7 @@ app.controller('ReadersCtrl', function($scope, $http, $interval, data) {
 
             $http.get('/api/reader/all').then(function(response) {
                 $scope.readers.data = response.data.readers;
+                $scope.readersGridApi.core.refresh();
             });
         }
     };
@@ -62,30 +63,34 @@ app.controller('ReadersCtrl', function($scope, $http, $interval, data) {
         }
     }
 
-    $scope.new_reader = function() {
-        var name = window.prompt("Новый читатель", "");
-        if (name) {
-            $http.post('/api/reader/new', {name: name}).then(function(response) {
-                if (response.data.error) {
-                    alert(response.data.error);
-                } else {
-                    $scope.readers.data.unshift(response.data);
-                    var book_id = data.selectedBook;
-                    var reader_id = response.data.id;
-                    $('#book-reserve-modal').modal('hide');
-                    $http.post('/api/book/reserve/?id='+ book_id + '&reader_id=' + reader_id).then(function() {
-                        data['bookq'][book_id] -= 1;
-                    });
+    $scope.new_reader_show = function() {
+        $('#book-reserve-modal').modal('hide');
+        $('#new-reader-modal').modal('show');
+    };
 
-                    /*
-                    $scope.readersGridApi.selection.clearSelectedRows();
-                    $scope.readersGridApi.selection.selectRow(
-                        $scope.readers.data[0]
-                    );
-                    */
-                }
-            });
-        }
+    $scope.new_reader = function() {
+        var postData = {
+            name: $scope.newReader.name,
+            phone: $scope.newReader.phone,
+            email: $scope.newReader.email
+        };
+        $http.post('/api/reader/new', postData).then(function(response) {
+            if (response.data.error) {
+                alert(response.data.error);
+            } else {
+                $scope.newReader.name = '';
+                $scope.newReader.phone = '';
+                $scope.newReader.email = '';
+
+                $scope.readers.data.unshift(response.data);
+                var book_id = data.selectedBook;
+                var reader_id = response.data.id;
+                $('#new-reader-modal').modal('hide');
+                $http.post('/api/book/reserve/?id='+ book_id + '&reader_id=' + reader_id).then(function() {
+                    data['bookq'][book_id] -= 1;
+                });
+            }
+        });
     }
 
 });

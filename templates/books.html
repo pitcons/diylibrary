@@ -5,6 +5,48 @@
 
 {% block content %}
 
+<div id="new-reader-modal" class="modal" ng-controller="ReadersCtrl">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h4 class="modal-title">{% trans 'Новый читатель' %}</h4>
+      </div>
+      <div class="modal-body">
+        <form name="newReaderForm">
+
+          <div class="row form-group">
+            <label class="col-lg-4 control-label">{% trans 'Имя' %}</label>
+            <div class="col-lg-8">
+              <input ng-model="newReader.name" id="id_name" name="name" type="text" class="form-control" required />
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <label class="col-lg-4 control-label">{% trans 'Телефон' %}</label>
+            <div class="col-lg-8">
+              <input ng-model="newReader.phone" id="id_phone" name="phone" type="text" class="form-control" />
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <label class="col-lg-4 control-label">{% trans 'E-mail' %}</label>
+            <div class="col-lg-8">
+              <input ng-model="newReader.email"  id="id_email" name="email" type="text" class="form-control"
+              ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/"/>
+            </div>
+          </div>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Отмена' %}</button>
+        <button ng-disabled="!newReader.name || !newReaderForm.email.$valid" ng-click="new_reader()" type="button" class="btn btn-primary">{% trans 'Создать и взять книгу' %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="book-reserve-modal" class="modal" ng-controller="ReadersCtrl">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -23,7 +65,7 @@
 
       </div>
       <div class="modal-footer">
-        <button ng-click="new_reader()" type="button" class="btn btn-default pull-left">{% trans 'Новый читатель' %}</button>
+        <button ng-click="new_reader_show()" type="button" class="btn btn-default pull-left">{% trans 'Новый читатель' %}</button>
 
         <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Отмена' %}</button>
         <button ng-click="book_reserve()" type="button" class="btn btn-primary">{% trans 'Взять' %}</button>

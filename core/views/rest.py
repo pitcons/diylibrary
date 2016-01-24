@@ -121,7 +121,9 @@ def reader_new(request):
             'error': 'Читатель с таким именем уже сущетвует'
         })
 
-    reader = Reader(name=post['name'])
+    reader = Reader(name=post['name'],
+                    phone=post.get('phone'),
+                    email=post.get('email'))
     reader.save()
     return JsonResponse({
         'id': reader.id,
