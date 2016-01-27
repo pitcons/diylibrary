@@ -45,6 +45,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = (
+    'ajax_select',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -142,6 +143,7 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "djangobower.finders.BowerFinder",
 ]
+
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'static/')
 BOWER_INSTALLED_APPS = (
     'angular-ui-grid',

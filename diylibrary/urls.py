@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
+from ajax_select import urls as ajax_select_urls
 from core.views.books import BooksView
 from core.views.reading import ReadingView
 from core.views.readers import ReadersView
@@ -24,6 +25,7 @@ import core.views.rest as rest
 
 urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
+    url(r'^ajax_select/', include(ajax_select_urls)),
     url(r'^tagging_autocomplete/', include('tagging_autocomplete.urls')),
     url(r'^admin/', include(admin.site.urls)),
 #    url(r'^books/', BooksView.as_view(), name="books"),

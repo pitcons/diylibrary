@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
 from django.utils.translation import ugettext as _
 from django.contrib import admin
+from ajax_select.admin import AjaxSelectAdmin
 from .models import Author, Section, Book, Reader, Reading, Owner
+from .forms import BookForm
 
 
-class BookAdmin(admin.ModelAdmin):
+class BookAdmin(AjaxSelectAdmin, admin.ModelAdmin):
+    form = BookForm
+
     list_display = 'id', 'isbn', 'year',  'section', 'title', 'quantity', 'quantity_total'
     list_filter = 'year', 'section', 'owner', 'room_only'
     search_fields = 'title',
-    filter_horizontal = 'authors',
-
-
-# class BookInline(admin.TabularInline):
-#     model = Book.authors.through
-#     extra = 0
-
+    class Media:
+        css = {
+            'all': ('/static/style_admin.css',)
+        }
 
 class AuthorAdmin(admin.ModelAdmin):
     search_fields = 'name',
-    # inlines = BookInline,
 
 
 class ReaderAdmin(admin.ModelAdmin):

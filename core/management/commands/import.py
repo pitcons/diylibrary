@@ -38,12 +38,14 @@ class Command(BaseCommand):
 
         if section_name in ('НЕТ', '', ):
             section_name = 'отсуствует'
+        if quantity == 'много':
+            quantity = 999
 
-        author, _ = models.Author.objects.get_or_create(name=author_name)
-        section, _ = models.Section.objects.get_or_create(name=section_name)
+        author, _ = models.Author.objects.get_or_create(name=author_name.strip())
+        section, _ = models.Section.objects.get_or_create(name=section_name.strip())
         book, _ = models.Book.objects.get_or_create(
             section=section,
-            title = title,
+            title=title.strip(),
             quantity=quantity or 1,
             quantity_total=quantity or 1
         )
@@ -51,7 +53,8 @@ class Command(BaseCommand):
         if not book.authors.filter(id=author.id).exists():
             book.authors.add(author)
 
-        print tags
+        book.tags = tags
+        book.save()
         Tag.objects.update_tags(book, tags)
 
     def handle(self, path, *args, **options):
