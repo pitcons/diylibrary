@@ -129,7 +129,7 @@
                     </td>
                     <td>
                         {% for tag in tag_list %}
-                        <a href="{% url 'books' %}?tag={{ tag }}">{{ tag }}</a>
+                        <a href="{% url 'books' %}?tag={{ tag }}">{{ tag|lower }}</a>
                         {% endfor %}
                     </td>
                 </tr>
