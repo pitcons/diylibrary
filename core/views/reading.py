@@ -10,7 +10,7 @@ from core import models
 
 class ReadingView(ListView):
     template_name = "reading.html"
-    paginate_by = 20
+    paginate_by = 30
 
     def get_queryset(self):
         reading = models.Reading.objects.all()

@@ -10,7 +10,7 @@ from core import models
 
 class BooksView(ListView):
     template_name = "books.html"
-    paginate_by = 20
+    paginate_by = 30
 
     def get_queryset(self):
         if 'tag' in self.request.GET and self.request.GET['tag']:
